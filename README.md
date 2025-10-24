@@ -1,14 +1,27 @@
-# MediSphere - Blockchain-Powered Healthcare Data Management Platform
+# MediSphere - Hedera-Powered Healthcare Data Management Platform
 
-**Track**: Healthcare & Public Health Innovation
+**Track**: DLT for Operations
 
-**Hedera Testnet Deployment**: Active
+[![License: Apache-2.0](https://img.shields.io/badge/License-Apache-2.0-yellow.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Hedera](https://img.shields.io/badge/Powered%20by-Hedera-blue)](https://hedera.com)
+[![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-18+-green)](https://nodejs.org/)
+
+---
+
+## 📋 Table of Contents
+
+- [Hedera Integration Summary](#hedera-integration-summary)
+- [Deployment and Setup Instructions](#deployment--setup-instructions)
+- [Architectural Diagram](#architecture-diagram)
+- [Deployed Hedera IDs](#deployed-hedera-ids)
+- [Project Structure](#project-structure)
 
 ---
 
 ## Hedera Integration Summary
 
-MediSphere is a comprehensive healthcare platform that leverages **four core Hedera services** to provide secure, transparent, and cost-efficient health data management across Africa. Our integration strategy prioritizes economic sustainability and operational reliability for resource-constrained healthcare settings.
+MediSphere is a comprehensive healthcare platform that leverages **four core Hedera services** to provide secure, transparent, cost-efficient, and interoperable health data management across Africa. Our integration strategy prioritizes economic sustainability and operational reliability for resource-constrained healthcare settings.
 
 ### 1. Hedera Consensus Service (HCS) - Immutable Audit Trails
 
@@ -159,35 +172,6 @@ cp .env.example .env
 
 **Configure Environment Variables** (Edit `backend/.env`):
 
-```env
-# MongoDB Configuration
-MONGO_URI=mongodb://localhost:27017/medisphere
-
-# JWT Authentication
-JWT_SECRET=your-super-secret-jwt-key-minimum-32-characters
-
-# Hedera Network Configuration
-HEDERA_NETWORK=testnet
-OPERATOR_ID=0.0.YOUR_ACCOUNT_ID
-OPERATOR_KEY=your-ed25519-private-key-from-hedera-portal
-
-# Hedera Service IDs (Platform Resources)
-MEDISPHERE_HCS_AUDIT_TOPIC_ID=0.0.YOUR_HCS_TOPIC_ID
-VACCINATION_NFT_COLLECTION_ID=0.0.YOUR_NFT_TOKEN_ID
-
-# IPFS Configuration (Pinata)
-PINATA_JWT=your-pinata-jwt-token
-PINATA_GATEWAY=your-gateway.mypinata.cloud
-
-# Cloudinary Configuration
-CLOUDINARY_CLOUD_NAME=your-cloud-name
-CLOUDINARY_API_KEY=your-cloudinary-api-key
-CLOUDINARY_API_SECRET=your-cloudinary-api-secret
-
-# Server Configuration
-PORT=4000
-```
-
 **Initialize Hedera Resources** (First-time setup):
 
 ```bash
@@ -246,13 +230,6 @@ cd backend
 npm run indexer
 ```
 
-Expected output:
-
-```
-🔍 Mirror Node Indexer started
-✅ Polling topic 0.0.YOUR_HCS_TOPIC_ID every 30 seconds
-```
-
 **Terminal 4 - Frontend Development Server**:
 
 ```bash
@@ -260,41 +237,11 @@ cd frontend
 npm run dev
 ```
 
-Expected output:
-
-```
-✓ Ready on http://localhost:3000
-```
-
 ### Step 5: Verify Installation
 
 1. **Access Frontend**: Open browser to `http://localhost:3000`
 2. **Access API Docs**: Navigate to `http://localhost:4000/api/docs`
-3. **Register Test User**: Create account via UI at `http://localhost:3000/auth/register`
-4. **Create Test Record**: Navigate to LifeChain service and create a health record
-5. **Verify on Hedera**: Copy HCS transaction ID and verify on [HashScan Testnet](https://hashscan.io/testnet)
-
-### Running Environment
-
-**Local Development State**:
-
-- **Frontend**: React/Next.js UI running on `http://localhost:3000`
-- **Backend API**: Express.js REST API on `http://localhost:4000/api`
-- **Indexer**: Background service polling Hedera Mirror Node every 30 seconds
-- **Database**: MongoDB running locally on `mongodb://localhost:27017/medisphere`
-- **Blockchain**: Connected to Hedera Testnet (`testnet` network)
-
-**Key URLs**:
-
-- Landing Page: `http://localhost:3000`
-- Patient Dashboard: `http://localhost:3000/dashboard/patient`
-- Doctor Dashboard: `http://localhost:3000/dashboard/doctor`
-- Hospital Dashboard: `http://localhost:3000/dashboard/hospital`
-- Insurer Dashboard: `http://localhost:3000/dashboard/insurer`
-- Government Dashboard: `http://localhost:3000/dashboard/government`
-- Block Explorer: `http://localhost:3000/explorer`
-- API Documentation: `http://localhost:4000/api/docs`
-- Health Check: `http://localhost:4000/health`
+3. **Backend API**: Express.js REST API on `http://localhost:4000/api`
 
 ---
 
@@ -302,91 +249,91 @@ Expected output:
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
-│                          MEDISPHERE ARCHITECTURE                         │
-│                        (11 Integrated Services)                          │
+│                          MEDISPHERE ARCHITECTURE                        │
+│                        (11 Integrated Services)                         │
 └─────────────────────────────────────────────────────────────────────────┘
 
 ┌──────────────────────────────────────────────────────────────────────────┐
-│                       FRONTEND (Next.js/React)                            │
-│                                                                            │
-│  Row 1: Core Health Services                                              │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐ │
-│  │  LifeChain   │  │ PersonaVault │  │  DataBridge  │  │   HealthIQ   │ │
-│  │   (Records)  │  │   (DID/VC)   │  │ (Data Share) │  │  (AI Chat)   │ │
-│  └──────────────┘  └──────────────┘  └──────────────┘  └──────────────┘ │
-│                                                                            │
-│  Row 2: Payment & Incentive Layer                                         │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐ │
-│  │   CareXpay   │  │ ClaimSphere  │  │  ImpactGrid  │  │   MedFlow    │ │
-│  │  (Payments)  │  │  (Insurance) │  │ (Campaigns)  │  │(Appointments)│ │
-│  └──────────────┘  └──────────────┘  └──────────────┘  └──────────────┘ │
-│                                                                            │
-│  Row 3: Compliance & Verification                                         │
+│                       FRONTEND (Next.js/React)                           │
+│                                                                          │
+│  Row 1: Core Health Services                                             │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  │
+│  │  LifeChain   │  │ PersonaVault │  │  DataBridge  │  │   HealthIQ   │  │
+│  │   (Records)  │  │   (DID/VC)   │  │ (Data Share) │  │  (AI Chat)   │  │
+│  └──────────────┘  └──────────────┘  └──────────────┘  └──────────────┘  │
+│                                                                          │
+│  Row 2: Payment & Incentive Layer                                        │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  │
+│  │   CareXpay   │  │ ClaimSphere  │  │  ImpactGrid  │  │   MedFlow    │  │
+│  │  (Payments)  │  │  (Insurance) │  │ (Campaigns)  │  │(Appointments)│  │
+│  └──────────────┘  └──────────────┘  └──────────────┘  └──────────────┘  │
+│                                                                          │
+│  Row 3: Compliance & Verification                                        │
 │  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐                    │
 │  │   GovHealth  │  │   MediTrace  │  │BlockExplorer │                    │
 │  │ (Compliance) │  │ (Pharma QR)  │  │  (Verifier)  │                    │
 │  └──────────────┘  └──────────────┘  └──────────────┘                    │
-│                                                                            │
-│                            [HTTP/HTTPS API]                                │
-│                                  ↓                                         │
+│                                                                          │
+│                            [HTTP/HTTPS API]                              │
+│                                  ↓                                       │
 └──────────────────────────────────────────────────────────────────────────┘
                                    │
                                    ↓
 ┌──────────────────────────────────────────────────────────────────────────┐
-│                      BACKEND (Express.js/Node.js)                         │
-│                                                                            │
+│                      BACKEND (Express.js/Node.js)                        │
+│                                                                          │
 │  ┌─────────────────────────────────────────────────────────────────────┐ │
-│  │                        API Layer (REST)                              │ │
+│  │                        API Layer (REST)                             │ │
 │  │  /auth  /records  /persona  /databridge  /healthiq  /payments       │ │
 │  │  /claims  /impact  /gov  /meditrace  /medflow  /explorer            │ │
 │  └────────────────────────────┬────────────────────────────────────────┘ │
-│                                ↓                                          │
+│                                ↓                                         │
 │  ┌─────────────────────────────────────────────────────────────────────┐ │
-│  │                     Business Logic Controllers                       │ │
-│  │  AuthController │ RecordController │ DatabridgeController │ etc...   │ │
+│  │                     Business Logic Controllers                      │ │
+│  │  AuthController │ RecordController │ DatabridgeController │ etc...  │ │
 │  └────┬──────────────────┬────────────────────┬─────────────────────┬──┘ │
 │       │                  │                    │                     │    │
 │       ↓                  ↓                    ↓                     ↓    │
-│  ┌─────────┐      ┌──────────┐        ┌──────────┐         ┌──────────┐ │
-│  │ MongoDB │      │   IPFS   │        │Cloudinary│         │  Hedera  │ │
-│  │ (User   │      │ (Pinata) │        │ (Media)  │         │  Client  │ │
-│  │  Data)  │      │(Records) │        │(Uploads) │         │          │ │
-│  └─────────┘      └──────────┘        └──────────┘         └────┬─────┘ │
-│                                                                   │       │
-└───────────────────────────────────────────────────────────────────┼───────┘
+│  ┌─────────┐      ┌──────────┐        ┌──────────┐         ┌──────────┐  │
+│  │ MongoDB │      │   IPFS   │        │Cloudinary│         │  Hedera  │  │
+│  │ (User   │      │ (Pinata) │        │ (Media)  │         │  Client  │  │
+│  │  Data)  │      │(Records) │        │(Uploads) │         │          │  │
+│  └─────────┘      └──────────┘        └──────────┘         └────┬─────┘  │
+│                                                                   │      │
+└───────────────────────────────────────────────────────────────────┼──────┘
                                                                     │
                                                                     ↓
 ┌──────────────────────────────────────────────────────────────────────────┐
-│                       HEDERA HASHGRAPH NETWORK                            │
-│                              (Testnet)                                    │
-│                                                                            │
-│  ┌────────────────────┐  ┌────────────────────┐  ┌────────────────────┐ │
-│  │  Consensus Service │  │   Token Service    │  │   Mirror Node API  │ │
-│  │      (HCS)         │  │      (HTS)         │  │                    │ │
-│  │                    │  │                    │  │                    │ │
-│  │ ┌────────────────┐ │  │ ┌────────────────┐ │  │ ┌────────────────┐ │ │
-│  │ │ Audit Log      │ │  │ │ CARE Token     │ │  │ │ Topic Messages │ │ │
-│  │ │ Topic          │ │  │ │ (Fungible)     │ │  │ │ Indexing       │ │ │
-│  │ │ 0.0.XXXXXX     │ │  │ │                │ │  │ │                │ │ │
-│  │ └────────────────┘ │  │ └────────────────┘ │  │ └────────────────┘ │ │
-│  │                    │  │                    │  │                    │ │
-│  │ ┌────────────────┐ │  │ ┌────────────────┐ │  │ ┌────────────────┐ │ │
-│  │ │ DID Identity   │ │  │ │ Vaccination    │ │  │ │ Transaction    │ │ │
-│  │ │ Topics         │ │  │ │ NFTs           │ │  │ │ History Query  │ │ │
-│  │ │                │ │  │ │ 0.0.YYYYYY     │ │  │ │                │ │ │
-│  │ └────────────────┘ │  │ └────────────────┘ │  │ └────────────────┘ │ │
-│  │                    │  │                    │  │                    │ │
-│  │ ┌────────────────┐ │  │ ┌────────────────┐ │  │ ┌────────────────┐ │ │
-│  │ │ Data Sharing   │ │  │ │ Campaign       │ │  │ │ Account        │ │ │
-│  │ │ Consent Logs   │ │  │ │ Reward Tokens  │ │  │ │ Token Balances │ │ │
-│  │ │                │ │  │ │ (Custom HTS)   │ │  │ │                │ │ │
-│  │ └────────────────┘ │  │ └────────────────┘ │  │ └────────────────┘ │ │
-│  └────────────────────┘  └────────────────────┘  └────────────────────┘ │
-│                                                                            │
-│                         ↓ Data Flow ↓                                     │
-│                                                                            │
+│                       HEDERA HASHGRAPH NETWORK                           │
+│                              (Testnet)                                   │
+│                                                                          │
+│  ┌────────────────────┐  ┌────────────────────┐  ┌────────────────────┐  │
+│  │  Consensus Service │  │   Token Service    │  │   Mirror Node API  │  │
+│  │      (HCS)         │  │      (HTS)         │  │                    │  │
+│  │                    │  │                    │  │                    │  │
+│  │ ┌────────────────┐ │  │ ┌────────────────┐ │  │ ┌────────────────┐ │  │
+│  │ │ Audit Log      │ │  │ │ CARE Token     │ │  │ │ Topic Messages │ │  │
+│  │ │ Topic          │ │  │ │ (Fungible)     │ │  │ │ Indexing       │ │  │
+│  │ │ 0.0.XXXXXX     │ │  │ │                │ │  │ │                │ │  │
+│  │ └────────────────┘ │  │ └────────────────┘ │  │ └────────────────┘ │  │
+│  │                    │  │                    │  │                    │  │
+│  │ ┌────────────────┐ │  │ ┌────────────────┐ │  │ ┌────────────────┐ │  │
+│  │ │ DID Identity   │ │  │ │ Vaccination    │ │  │ │ Transaction    │ │  │
+│  │ │ Topics         │ │  │ │ NFTs           │ │  │ │ History Query  │ │  │
+│  │ │                │ │  │ │ 0.0.YYYYYY     │ │  │ │                │ │  │
+│  │ └────────────────┘ │  │ └────────────────┘ │  │ └────────────────┘ │  │
+│  │                    │  │                    │  │                    │  │
+│  │ ┌────────────────┐ │  │ ┌────────────────┐ │  │ ┌────────────────┐ │  │
+│  │ │ Data Sharing   │ │  │ │ Campaign       │ │  │ │ Account        │ │  │
+│  │ │ Consent Logs   │ │  │ │ Reward Tokens  │ │  │ │ Token Balances │ │  │
+│  │ │                │ │  │ │ (Custom HTS)   │ │  │ │                │ │  │
+│  │ └────────────────┘ │  │ └────────────────┘ │  │ └────────────────┘ │  │
+│  └────────────────────┘  └────────────────────┘  └────────────────────┘  │
+│                                                                          │
+│                         ↓ Data Flow ↓                                    │
+│                                                                          │
 │  ┌────────────────────────────────────────────────────────────────────┐  │
-│  │                    MediSphere Indexer Service                       │  │
+│  │                    MediSphere Indexer Service                      │  │
 │  │  (Polls Mirror Node → Stores Metadata in MongoDB → Powers Explorer)│  │
 │  └────────────────────────────────────────────────────────────────────┘  │
 └──────────────────────────────────────────────────────────────────────────┘
@@ -394,7 +341,7 @@ Expected output:
                         [Public Verification]
                                    ↓
                     https://hashscan.io/testnet
-                  (Users verify records on blockchain)
+                  (Users verify records on hedera network)
 
 
 DATA FLOW LEGEND:
@@ -419,11 +366,11 @@ All Hedera resources are deployed on **Hedera Testnet** for development and demo
 
 ### Platform Operator Account
 
-- **Account ID**: `0.0.5294940`
+- **Account ID**: `0.0.3742504`
 - **Type**: Main operator account for all platform transactions
 - **Public Key**: `302a300506032b65700321007c77c02a9e23ef5a7953db5b3ff8b48f80e8e5a8f8e3e6ecfb5f9c48a1b6f2d5`
 - **Purpose**: Signs all HCS messages, HTS token operations, and DID transactions
-- **HashScan**: [View Account](https://hashscan.io/testnet/account/0.0.5294940)
+- **HashScan**: [View Account](https://hashscan.io/testnet/account/0.0.3742504)
 
 ### Hedera Consensus Service (HCS)
 
@@ -511,141 +458,6 @@ All Hedera resources are deployed on **Hedera Testnet** for development and demo
 
 ---
 
-## Code Quality & Auditability
-
-### Code Style Standards
-
-**Backend (JavaScript ES6+)**:
-
-- **Async/Await**: All asynchronous operations use async/await (no callback hell)
-- **Error Handling**: Try-catch blocks with descriptive error messages
-- **Naming Conventions**: camelCase for variables/functions, PascalCase for classes
-- **Comments**: JSDoc for all public functions, inline comments for complex logic
-- **Modularity**: Single Responsibility Principle - each controller/service has one purpose
-
-**Frontend (TypeScript/React)**:
-
-- **TypeScript**: Strong typing for all components and API calls
-- **Functional Components**: All components use React Hooks (no class components)
-- **State Management**: useState, useEffect, custom hooks
-- **Naming**: PascalCase for components, camelCase for functions/variables
-- **Comments**: TSDoc for complex components
-
-**Example of Clean Code** (backend/controllers/recordController.js):
-
-```javascript
-/**
- * Create a new health record and submit audit log to Hedera HCS
- * @route POST /api/records
- * @access Private
- * @param {Object} req.body - Record data (type, title, doctor, facility, date)
- * @returns {Object} Created record with HCS transaction ID
- */
-export const createRecord = async (req, res) => {
-  try {
-    const { type, title, doctor, facility, date, files } = req.body;
-
-    // Step 1: Upload files to IPFS
-    const ipfsCid = await uploadToIPFS(files);
-
-    // Step 2: Create MongoDB record
-    const record = await Record.create({
-      patient: req.user.id,
-      type,
-      title,
-      doctor,
-      facility,
-      date,
-      ipfsCid,
-    });
-
-    // Step 3: Submit audit log to Hedera HCS
-    const hcsTransactionId = await submitToHCS({
-      action: "HEALTH_RECORD_CREATED",
-      actor: record._id,
-      metadata: { patientId: req.user.hederaAccountId, type, ipfsCid },
-    });
-
-    // Step 4: Update record with HCS transaction ID
-    record.hcsTransactionId = hcsTransactionId;
-    await record.save();
-
-    res.status(201).json({ success: true, record });
-  } catch (error) {
-    console.error("Record creation error:", error);
-    res.status(500).json({ success: false, message: error.message });
-  }
-};
-```
-
-### Linting & Code Formatting
-
-**ESLint Configuration** (backend/.eslintrc.json):
-
-```json
-{
-  "env": {
-    "node": true,
-    "es2021": true
-  },
-  "extends": "eslint:recommended",
-  "parserOptions": {
-    "ecmaVersion": 12,
-    "sourceType": "module"
-  },
-  "rules": {
-    "no-console": "off",
-    "no-unused-vars": "warn",
-    "prefer-const": "error"
-  }
-}
-```
-
-**Run Linter**:
-
-```bash
-cd backend
-npx eslint . --ext .js
-```
-
-### Commit History Standards
-
-All commits follow [Conventional Commits](https://www.conventionalcommits.org/) specification:
-
-- `feat: add insurance claim auto-payout feature`
-- `fix: resolve HCS message submission timeout`
-- `docs: update DataBridge API documentation`
-- `refactor: optimize Mirror Node indexer performance`
-- `test: add unit tests for token transfer controller`
-
-**View Clean Commit History**:
-
-```bash
-git log --oneline --graph --decorate
-```
-
-### Auditability Checklist
-
-- ✅ **Function Names**: Descriptive and self-documenting
-- ✅ **Error Messages**: Detailed for debugging
-- ✅ **Inline Comments**: Complex logic explained
-- ✅ **No Magic Numbers**: Constants defined with descriptive names
-- ✅ **No Dead Code**: Unused code removed
-- ✅ **Consistent Formatting**: 2-space indentation, single quotes
-- ✅ **Security**: No hardcoded credentials, input validation on all endpoints
-- ✅ **API Documentation**: Swagger/JSDoc for all endpoints
-
-**Core Logic Files for Judges to Review**:
-
-1. [backend/controllers/recordController.js](backend/controllers/recordController.js) - Health record creation with HCS logging
-2. [backend/utils/hcsLogger.js](backend/utils/hcsLogger.js) - Hedera HCS integration logic
-3. [backend/utils/hederaTokenService.js](backend/utils/hederaTokenService.js) - HTS token operations
-4. [backend/services/mirrorNodeService.js](backend/services/mirrorNodeService.js) - Mirror Node API integration
-5. [backend/controllers/personaController.js](backend/controllers/personaController.js) - Hedera DID implementation
-6. [frontend/components/services/lifechain.tsx](frontend/components/services/lifechain.tsx) - Health record UI
-
----
-
 ## Core Features & Services
 
 MediSphere consists of **11 integrated services** solving specific healthcare challenges:
@@ -681,48 +493,12 @@ MediSphere consists of **11 integrated services** solving specific healthcare ch
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS 4.1+
 - **UI Library**: Radix UI (shadcn/ui)
-- **Charts**: Recharts
 
 ### Blockchain & Web3
 
 - **Network**: Hedera Hashgraph Testnet
 - **Services**: HCS, HTS, DID SDK, Mirror Node API
 - **Verification**: HashScan explorer integration
-
----
-
-## Contributing
-
-We welcome contributions! Please follow these guidelines:
-
-1. **Fork the repository**
-2. **Create feature branch**: `git checkout -b feature/your-feature`
-3. **Follow code style**: Use ESLint for backend, Prettier for frontend
-4. **Write tests**: Add unit tests for new features
-5. **Commit with conventions**: `feat:`, `fix:`, `docs:`, etc.
-6. **Submit Pull Request**: Describe changes and link related issues
-
----
-
-## License
-
-This project is licensed under the **MIT License** - see [LICENSE](LICENSE) file.
-
-```
-MIT License - Copyright (c) 2025 MediSphere Contributors
-Permission is hereby granted, free of charge, to use, modify, and distribute
-this software for any purpose, including commercial applications.
-```
-
----
-
-## Support & Resources
-
-- **API Documentation**: http://localhost:4000/api/docs
-- **Hedera Docs**: https://docs.hedera.com
-- **HashScan Explorer**: https://hashscan.io/testnet
-- **Hedera Portal**: https://portal.hedera.com
-- **GitHub Issues**: [Report Bugs](https://github.com/yourusername/medisphere/issues)
 
 ---
 
