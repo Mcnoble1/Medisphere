@@ -1,21 +1,26 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL ||
+  "https://medisphere-api.up.railway.app/api";
 const DATABRIDGE_BASE = `${API_BASE_URL}/v1/databridge`;
 
 // Helper function to get auth headers
 const getHeaders = (): HeadersInit => {
-  const token = typeof window !== 'undefined'
-    ? (localStorage.getItem('authToken') || sessionStorage.getItem('authToken'))
-    : null;
+  const token =
+    typeof window !== "undefined"
+      ? localStorage.getItem("authToken") || sessionStorage.getItem("authToken")
+      : null;
   return {
-    'Content-Type': 'application/json',
-    ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+    "Content-Type": "application/json",
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
   };
 };
 
 // Helper function to handle fetch responses
 const handleResponse = async (response: Response) => {
   if (!response.ok) {
-    const error = await response.json().catch(() => ({ message: 'Request failed' }));
+    const error = await response
+      .json()
+      .catch(() => ({ message: "Request failed" }));
     throw new Error(error.message || `HTTP ${response.status}`);
   }
   return response.json();
@@ -23,12 +28,15 @@ const handleResponse = async (response: Response) => {
 
 // Helper function to build query string
 const buildQueryString = (params?: Record<string, any>) => {
-  if (!params) return '';
+  if (!params) return "";
   const query = Object.entries(params)
     .filter(([_, value]) => value !== undefined && value !== null)
-    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
-    .join('&');
-  return query ? `?${query}` : '';
+    .map(
+      ([key, value]) =>
+        `${encodeURIComponent(key)}=${encodeURIComponent(value)}`
+    )
+    .join("&");
+  return query ? `?${query}` : "";
 };
 
 // Types
@@ -44,8 +52,8 @@ export interface DataRequest {
   purpose: string;
   description?: string;
   justification?: string;
-  priority: 'low' | 'medium' | 'high' | 'urgent';
-  status: 'pending' | 'approved' | 'rejected' | 'revoked' | 'expired';
+  priority: "low" | "medium" | "high" | "urgent";
+  status: "pending" | "approved" | "rejected" | "revoked" | "expired";
   requestDate: string;
   validUntil: string;
   approvedAt?: string;
@@ -81,7 +89,7 @@ export interface DataShare {
   dataShared: string[];
   purpose: string;
   description?: string;
-  status: 'active' | 'expired' | 'revoked';
+  status: "active" | "expired" | "revoked";
   sharedDate: string;
   expiryDate: string;
   revokedAt?: string;
@@ -112,7 +120,7 @@ export interface DataShare {
 }
 
 export interface AuditLog {
-  type: 'request' | 'share';
+  type: "request" | "share";
   id: string;
   action: string;
   actor: string;
@@ -137,12 +145,12 @@ export const createDataRequest = async (data: {
   purpose: string;
   description?: string;
   justification?: string;
-  priority?: 'low' | 'medium' | 'high' | 'urgent';
+  priority?: "low" | "medium" | "high" | "urgent";
   validUntil?: string;
   accessDuration?: number;
 }) => {
   const response = await fetch(`${DATABRIDGE_BASE}/requests`, {
-    method: 'POST',
+    method: "POST",
     headers: getHeaders(),
     body: JSON.stringify(data),
   });
@@ -157,10 +165,13 @@ export const getIncomingRequests = async (params?: {
   offset?: number;
 }) => {
   const queryString = buildQueryString(params);
-  const response = await fetch(`${DATABRIDGE_BASE}/requests/incoming${queryString}`, {
-    method: 'GET',
-    headers: getHeaders(),
-  });
+  const response = await fetch(
+    `${DATABRIDGE_BASE}/requests/incoming${queryString}`,
+    {
+      method: "GET",
+      headers: getHeaders(),
+    }
+  );
   return handleResponse(response);
 };
 
@@ -170,10 +181,13 @@ export const getOutgoingRequests = async (params?: {
   offset?: number;
 }) => {
   const queryString = buildQueryString(params);
-  const response = await fetch(`${DATABRIDGE_BASE}/requests/outgoing${queryString}`, {
-    method: 'GET',
-    headers: getHeaders(),
-  });
+  const response = await fetch(
+    `${DATABRIDGE_BASE}/requests/outgoing${queryString}`,
+    {
+      method: "GET",
+      headers: getHeaders(),
+    }
+  );
   return handleResponse(response);
 };
 
@@ -185,11 +199,14 @@ export const approveDataRequest = async (
     notes?: string;
   }
 ) => {
-  const response = await fetch(`${DATABRIDGE_BASE}/requests/${requestId}/approve`, {
-    method: 'POST',
-    headers: getHeaders(),
-    body: JSON.stringify(data || {}),
-  });
+  const response = await fetch(
+    `${DATABRIDGE_BASE}/requests/${requestId}/approve`,
+    {
+      method: "POST",
+      headers: getHeaders(),
+      body: JSON.stringify(data || {}),
+    }
+  );
   return handleResponse(response);
 };
 
@@ -200,11 +217,14 @@ export const rejectDataRequest = async (
     notes?: string;
   }
 ) => {
-  const response = await fetch(`${DATABRIDGE_BASE}/requests/${requestId}/reject`, {
-    method: 'POST',
-    headers: getHeaders(),
-    body: JSON.stringify(data),
-  });
+  const response = await fetch(
+    `${DATABRIDGE_BASE}/requests/${requestId}/reject`,
+    {
+      method: "POST",
+      headers: getHeaders(),
+      body: JSON.stringify(data),
+    }
+  );
   return handleResponse(response);
 };
 
@@ -215,11 +235,14 @@ export const revokeDataRequest = async (
     notes?: string;
   }
 ) => {
-  const response = await fetch(`${DATABRIDGE_BASE}/requests/${requestId}/revoke`, {
-    method: 'POST',
-    headers: getHeaders(),
-    body: JSON.stringify(data),
-  });
+  const response = await fetch(
+    `${DATABRIDGE_BASE}/requests/${requestId}/revoke`,
+    {
+      method: "POST",
+      headers: getHeaders(),
+      body: JSON.stringify(data),
+    }
+  );
   return handleResponse(response);
 };
 
@@ -243,7 +266,7 @@ export const createDataShare = async (data: {
   };
 }) => {
   const response = await fetch(`${DATABRIDGE_BASE}/shares`, {
-    method: 'POST',
+    method: "POST",
     headers: getHeaders(),
     body: JSON.stringify(data),
   });
@@ -256,10 +279,13 @@ export const getOutgoingShares = async (params?: {
   offset?: number;
 }) => {
   const queryString = buildQueryString(params);
-  const response = await fetch(`${DATABRIDGE_BASE}/shares/outgoing${queryString}`, {
-    method: 'GET',
-    headers: getHeaders(),
-  });
+  const response = await fetch(
+    `${DATABRIDGE_BASE}/shares/outgoing${queryString}`,
+    {
+      method: "GET",
+      headers: getHeaders(),
+    }
+  );
   return handleResponse(response);
 };
 
@@ -269,10 +295,13 @@ export const getIncomingShares = async (params?: {
   offset?: number;
 }) => {
   const queryString = buildQueryString(params);
-  const response = await fetch(`${DATABRIDGE_BASE}/shares/incoming${queryString}`, {
-    method: 'GET',
-    headers: getHeaders(),
-  });
+  const response = await fetch(
+    `${DATABRIDGE_BASE}/shares/incoming${queryString}`,
+    {
+      method: "GET",
+      headers: getHeaders(),
+    }
+  );
   return handleResponse(response);
 };
 
@@ -283,7 +312,7 @@ export const revokeDataShare = async (
   }
 ) => {
   const response = await fetch(`${DATABRIDGE_BASE}/shares/${shareId}/revoke`, {
-    method: 'POST',
+    method: "POST",
     headers: getHeaders(),
     body: JSON.stringify(data || {}),
   });
@@ -292,7 +321,7 @@ export const revokeDataShare = async (
 
 export const accessSharedData = async (shareId: string) => {
   const response = await fetch(`${DATABRIDGE_BASE}/shares/${shareId}/access`, {
-    method: 'GET',
+    method: "GET",
     headers: getHeaders(),
   });
   return handleResponse(response);
@@ -301,13 +330,13 @@ export const accessSharedData = async (shareId: string) => {
 // ==================== AUDIT & LOGS APIs ====================
 
 export const getAuditLogs = async (params?: {
-  type?: 'all' | 'requests' | 'shares';
+  type?: "all" | "requests" | "shares";
   limit?: number;
   offset?: number;
 }) => {
   const queryString = buildQueryString(params);
   const response = await fetch(`${DATABRIDGE_BASE}/logs${queryString}`, {
-    method: 'GET',
+    method: "GET",
     headers: getHeaders(),
   });
   return handleResponse(response);
@@ -317,33 +346,33 @@ export const getAuditLogs = async (params?: {
 
 export const getStatusColor = (status: string) => {
   const colors: Record<string, string> = {
-    pending: 'text-yellow-600 bg-yellow-50',
-    approved: 'text-green-600 bg-green-50',
-    rejected: 'text-red-600 bg-red-50',
-    revoked: 'text-gray-600 bg-gray-50',
-    expired: 'text-gray-600 bg-gray-50',
-    active: 'text-green-600 bg-green-50'
+    pending: "text-yellow-600 bg-yellow-50",
+    approved: "text-green-600 bg-green-50",
+    rejected: "text-red-600 bg-red-50",
+    revoked: "text-gray-600 bg-gray-50",
+    expired: "text-gray-600 bg-gray-50",
+    active: "text-green-600 bg-green-50",
   };
-  return colors[status] || 'text-gray-600 bg-gray-50';
+  return colors[status] || "text-gray-600 bg-gray-50";
 };
 
 export const getPriorityColor = (priority: string) => {
   const colors: Record<string, string> = {
-    low: 'text-blue-600 bg-blue-50',
-    medium: 'text-yellow-600 bg-yellow-50',
-    high: 'text-orange-600 bg-orange-50',
-    urgent: 'text-red-600 bg-red-50'
+    low: "text-blue-600 bg-blue-50",
+    medium: "text-yellow-600 bg-yellow-50",
+    high: "text-orange-600 bg-orange-50",
+    urgent: "text-red-600 bg-red-50",
   };
-  return colors[priority] || 'text-gray-600 bg-gray-50';
+  return colors[priority] || "text-gray-600 bg-gray-50";
 };
 
 export const formatDate = (dateString: string) => {
-  return new Date(dateString).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit'
+  return new Date(dateString).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
   });
 };
 

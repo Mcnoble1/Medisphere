@@ -1,4 +1,6 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL ||
+  "https://medisphere-api.up.railway.app/api";
 
 // Types for API responses
 export interface ApiResponse<T = any> {
@@ -8,8 +10,8 @@ export interface ApiResponse<T = any> {
 }
 
 export interface PaginatedResponse<T> {
-  records?: T[];  // For health records endpoints
-  data?: T[];     // For other endpoints
+  records?: T[]; // For health records endpoints
+  data?: T[]; // For other endpoints
   pagination: {
     total: number;
     limit: number;
@@ -53,7 +55,13 @@ export interface AuthResponse {
 // Health record types
 export interface HealthRecord {
   _id: string;
-  type: 'lab-result' | 'prescription' | 'diagnosis' | 'vaccination' | 'surgery' | 'other';
+  type:
+    | "lab-result"
+    | "prescription"
+    | "diagnosis"
+    | "vaccination"
+    | "surgery"
+    | "other";
   title: string;
   date: string;
   doctor: string;
@@ -101,7 +109,7 @@ export interface InsuranceClaim {
   title: string;
   treatmentDate: string;
   submissionDate: string;
-  status: 'pending' | 'reviewing' | 'approved' | 'rejected' | 'paid';
+  status: "pending" | "reviewing" | "approved" | "rejected" | "paid";
   totalAmount: number;
   approvedAmount: number;
   items: Array<{
@@ -139,7 +147,7 @@ export interface PaymentAccount {
   healthTokens: number;
   loyaltyPoints: number;
   transactions: Array<{
-    type: 'earned' | 'spent' | 'transferred' | 'reward' | 'grant';
+    type: "earned" | "spent" | "transferred" | "reward" | "grant";
     amount: number;
     description: string;
     relatedService?: string;
@@ -147,11 +155,11 @@ export interface PaymentAccount {
     createdAt: string;
   }>;
   paymentMethods: Array<{
-    type: 'mobile_money' | 'bank_account' | 'crypto_wallet';
+    type: "mobile_money" | "bank_account" | "crypto_wallet";
     provider: string;
     identifier: string;
     isDefault: boolean;
-    verificationStatus: 'pending' | 'verified' | 'failed';
+    verificationStatus: "pending" | "verified" | "failed";
   }>;
   totalEarned: number;
   totalSpent: number;
@@ -168,22 +176,22 @@ class ApiClient {
     this.baseURL = baseURL;
 
     // Load token from localStorage if available
-    if (typeof window !== 'undefined') {
-      this.token = localStorage.getItem('authToken');
+    if (typeof window !== "undefined") {
+      this.token = localStorage.getItem("authToken");
     }
   }
 
   setToken(token: string) {
     this.token = token;
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('authToken', token);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("authToken", token);
     }
   }
 
   clearToken() {
     this.token = null;
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem('authToken');
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("authToken");
     }
   }
 
@@ -194,12 +202,12 @@ class ApiClient {
     const url = `${this.baseURL}${endpoint}`;
 
     const headers: Record<string, string> = {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       ...(options.headers as Record<string, string>),
     };
 
     if (this.token) {
-      headers['Authorization'] = `Bearer ${this.token}`;
+      headers["Authorization"] = `Bearer ${this.token}`;
     }
 
     const response = await fetch(url, {
@@ -209,7 +217,9 @@ class ApiClient {
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+      throw new Error(
+        errorData.message || `HTTP error! status: ${response.status}`
+      );
     }
 
     return response.json();
@@ -217,8 +227,8 @@ class ApiClient {
 
   // Auth endpoints
   async login(credentials: LoginRequest): Promise<AuthResponse> {
-    const response = await this.request<AuthResponse>('/auth/login', {
-      method: 'POST',
+    const response = await this.request<AuthResponse>("/auth/login", {
+      method: "POST",
       body: JSON.stringify(credentials),
     });
 
@@ -232,21 +242,21 @@ class ApiClient {
   async register(userData: RegisterRequest): Promise<AuthResponse> {
     // Map frontend role names to backend enum values
     const roleMapping: Record<string, string> = {
-      'patient': 'PATIENT',
-      'doctor': 'DOCTOR',
-      'ngo': 'NGO',
-      'government': 'GOVERNMENT',
-      'pharma': 'PHARMA'
+      patient: "PATIENT",
+      doctor: "DOCTOR",
+      ngo: "NGO",
+      government: "GOVERNMENT",
+      pharma: "PHARMA",
     };
 
     const backendData = {
       ...userData,
       role: roleMapping[userData.role] || userData.role.toUpperCase(),
-      phoneNumber: userData.phoneNumber // Ensure correct field name
+      phoneNumber: userData.phoneNumber, // Ensure correct field name
     };
 
-    const response = await this.request<AuthResponse>('/auth/register', {
-      method: 'POST',
+    const response = await this.request<AuthResponse>("/auth/register", {
+      method: "POST",
       body: JSON.stringify(backendData),
     });
 
@@ -258,12 +268,12 @@ class ApiClient {
   }
 
   async getCurrentUser(): Promise<any> {
-    return this.request('/auth/me');
+    return this.request("/auth/me");
   }
 
   async logout(): Promise<{ message: string }> {
-    return this.request('/auth/logout', {
-      method: 'POST',
+    return this.request("/auth/logout", {
+      method: "POST",
     });
   }
 
@@ -274,37 +284,43 @@ class ApiClient {
     offset?: number;
   }): Promise<PaginatedResponse<HealthRecord>> {
     const query = new URLSearchParams();
-    if (params?.type) query.append('type', params.type);
-    if (params?.limit) query.append('limit', params.limit.toString());
-    if (params?.offset) query.append('offset', params.offset.toString());
+    if (params?.type) query.append("type", params.type);
+    if (params?.limit) query.append("limit", params.limit.toString());
+    if (params?.offset) query.append("offset", params.offset.toString());
 
     return this.request(`/records/my?${query.toString()}`);
   }
 
-  async createRecord(recordData: any): Promise<{ message: string; record: HealthRecord }> {
-    return this.request('/records', {
-      method: 'POST',
+  async createRecord(
+    recordData: any
+  ): Promise<{ message: string; record: HealthRecord }> {
+    return this.request("/records", {
+      method: "POST",
       body: JSON.stringify(recordData),
     });
   }
 
-  async uploadDocuments(formData: FormData): Promise<{ message: string; record: HealthRecord }> {
+  async uploadDocuments(
+    formData: FormData
+  ): Promise<{ message: string; record: HealthRecord }> {
     const url = `${this.baseURL}/records/upload`;
 
     const headers: Record<string, string> = {};
     if (this.token) {
-      headers['Authorization'] = `Bearer ${this.token}`;
+      headers["Authorization"] = `Bearer ${this.token}`;
     }
 
     const response = await fetch(url, {
-      method: 'POST',
+      method: "POST",
       headers,
       body: formData, // Don't set Content-Type - let browser set it with boundary
     });
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+      throw new Error(
+        errorData.message || `HTTP error! status: ${response.status}`
+      );
     }
 
     return response.json();
@@ -319,9 +335,9 @@ class ApiClient {
     }
   ): Promise<PaginatedResponse<HealthRecord>> {
     const query = new URLSearchParams();
-    if (params?.type) query.append('type', params.type);
-    if (params?.limit) query.append('limit', params.limit.toString());
-    if (params?.offset) query.append('offset', params.offset.toString());
+    if (params?.type) query.append("type", params.type);
+    if (params?.limit) query.append("limit", params.limit.toString());
+    if (params?.offset) query.append("offset", params.offset.toString());
 
     return this.request(`/records/patient/${patientId}?${query.toString()}`);
   }
@@ -331,13 +347,13 @@ class ApiClient {
     sharingData: { isShared: boolean; consentRecipients: string[] }
   ): Promise<{ record: HealthRecord }> {
     return this.request(`/records/${recordId}/sharing`, {
-      method: 'PUT',
+      method: "PUT",
       body: JSON.stringify(sharingData),
     });
   }
 
   async getRecordStats(): Promise<any> {
-    return this.request('/records/stats');
+    return this.request("/records/stats");
   }
 
   // Insurance claims endpoints
@@ -347,16 +363,18 @@ class ApiClient {
     offset?: number;
   }): Promise<PaginatedResponse<InsuranceClaim>> {
     const query = new URLSearchParams();
-    if (params?.status) query.append('status', params.status);
-    if (params?.limit) query.append('limit', params.limit.toString());
-    if (params?.offset) query.append('offset', params.offset.toString());
+    if (params?.status) query.append("status", params.status);
+    if (params?.limit) query.append("limit", params.limit.toString());
+    if (params?.offset) query.append("offset", params.offset.toString());
 
     return this.request(`/insurance/claims/my?${query.toString()}`);
   }
 
-  async createInsuranceClaim(claimData: any): Promise<{ claim: InsuranceClaim }> {
-    return this.request('/insurance/claims', {
-      method: 'POST',
+  async createInsuranceClaim(
+    claimData: any
+  ): Promise<{ claim: InsuranceClaim }> {
+    return this.request("/insurance/claims", {
+      method: "POST",
       body: JSON.stringify(claimData),
     });
   }
@@ -366,12 +384,12 @@ class ApiClient {
   }
 
   async getClaimStats(): Promise<any> {
-    return this.request('/insurance/claims/stats');
+    return this.request("/insurance/claims/stats");
   }
 
   // Payment endpoints
   async getPaymentAccount(): Promise<{ account: PaymentAccount }> {
-    return this.request('/payments/account');
+    return this.request("/payments/account");
   }
 
   async addTransaction(transactionData: {
@@ -380,8 +398,8 @@ class ApiClient {
     description: string;
     relatedService?: string;
   }): Promise<any> {
-    return this.request('/payments/transactions', {
-      method: 'POST',
+    return this.request("/payments/transactions", {
+      method: "POST",
       body: JSON.stringify(transactionData),
     });
   }
@@ -392,20 +410,20 @@ class ApiClient {
     offset?: number;
   }): Promise<PaginatedResponse<any>> {
     const query = new URLSearchParams();
-    if (params?.type) query.append('type', params.type);
-    if (params?.limit) query.append('limit', params.limit.toString());
-    if (params?.offset) query.append('offset', params.offset.toString());
+    if (params?.type) query.append("type", params.type);
+    if (params?.limit) query.append("limit", params.limit.toString());
+    if (params?.offset) query.append("offset", params.offset.toString());
 
     return this.request(`/payments/transactions?${query.toString()}`);
   }
 
   async getPaymentMethods(): Promise<{ paymentMethods: any[] }> {
-    return this.request('/payments/methods');
+    return this.request("/payments/methods");
   }
 
   async addPaymentMethod(methodData: any): Promise<any> {
-    return this.request('/payments/methods', {
-      method: 'POST',
+    return this.request("/payments/methods", {
+      method: "POST",
       body: JSON.stringify(methodData),
     });
   }
@@ -415,20 +433,20 @@ class ApiClient {
     amount: number;
     description: string;
   }): Promise<any> {
-    return this.request('/payments/transfer', {
-      method: 'POST',
+    return this.request("/payments/transfer", {
+      method: "POST",
       body: JSON.stringify(transferData),
     });
   }
 
   async getAccountAnalytics(): Promise<any> {
-    return this.request('/payments/analytics');
+    return this.request("/payments/analytics");
   }
 
   // HTS Token endpoints
   async getTokenBalances(params?: { syncWithNetwork?: boolean }): Promise<any> {
     const query = new URLSearchParams();
-    if (params?.syncWithNetwork) query.append('syncWithNetwork', 'true');
+    if (params?.syncWithNetwork) query.append("syncWithNetwork", "true");
     return this.request(`/payments/tokens/balances?${query.toString()}`);
   }
 
@@ -438,8 +456,8 @@ class ApiClient {
     tokenName: string;
     decimals?: number;
   }): Promise<any> {
-    return this.request('/payments/tokens/associate', {
-      method: 'POST',
+    return this.request("/payments/tokens/associate", {
+      method: "POST",
       body: JSON.stringify(tokenData),
     });
   }
@@ -451,14 +469,14 @@ class ApiClient {
     amount: number;
     description?: string;
   }): Promise<any> {
-    return this.request('/payments/tokens/send', {
-      method: 'POST',
+    return this.request("/payments/tokens/send", {
+      method: "POST",
       body: JSON.stringify(data),
     });
   }
 
   async getCampaignRewardTokens(): Promise<any> {
-    return this.request('/payments/tokens/campaign-rewards');
+    return this.request("/payments/tokens/campaign-rewards");
   }
 
   // Impact Grid / Campaign endpoints
@@ -469,17 +487,17 @@ class ApiClient {
     offset?: number;
   }): Promise<PaginatedResponse<any>> {
     const query = new URLSearchParams();
-    if (params?.status) query.append('status', params.status);
-    if (params?.category) query.append('category', params.category);
-    if (params?.limit) query.append('limit', params.limit.toString());
-    if (params?.offset) query.append('offset', params.offset.toString());
+    if (params?.status) query.append("status", params.status);
+    if (params?.category) query.append("category", params.category);
+    if (params?.limit) query.append("limit", params.limit.toString());
+    if (params?.offset) query.append("offset", params.offset.toString());
 
     return this.request(`/impact/campaigns?${query.toString()}`);
   }
 
   async createCampaign(campaignData: any): Promise<{ campaign: any }> {
-    return this.request('/impact/campaigns', {
-      method: 'POST',
+    return this.request("/impact/campaigns", {
+      method: "POST",
       body: JSON.stringify(campaignData),
     });
   }
@@ -488,23 +506,32 @@ class ApiClient {
     return this.request(`/impact/campaigns/${campaignId}`);
   }
 
-  async updateCampaign(campaignId: string, updates: any): Promise<{ campaign: any }> {
+  async updateCampaign(
+    campaignId: string,
+    updates: any
+  ): Promise<{ campaign: any }> {
     return this.request(`/impact/campaigns/${campaignId}`, {
-      method: 'PUT',
+      method: "PUT",
       body: JSON.stringify(updates),
     });
   }
 
-  async updateCampaignStatus(campaignId: string, status: string): Promise<{ campaign: any }> {
+  async updateCampaignStatus(
+    campaignId: string,
+    status: string
+  ): Promise<{ campaign: any }> {
     return this.request(`/impact/campaigns/${campaignId}/status`, {
-      method: 'PUT',
+      method: "PUT",
       body: JSON.stringify({ status }),
     });
   }
 
-  async addMilestone(campaignId: string, milestone: any): Promise<{ campaign: any }> {
+  async addMilestone(
+    campaignId: string,
+    milestone: any
+  ): Promise<{ campaign: any }> {
     return this.request(`/impact/campaigns/${campaignId}/milestones`, {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify(milestone),
     });
   }
@@ -514,21 +541,27 @@ class ApiClient {
     milestoneId: string,
     impact: any
   ): Promise<{ campaign: any }> {
-    return this.request(`/impact/campaigns/${campaignId}/milestones/${milestoneId}/complete`, {
-      method: 'PUT',
-      body: JSON.stringify({ impact }),
-    });
+    return this.request(
+      `/impact/campaigns/${campaignId}/milestones/${milestoneId}/complete`,
+      {
+        method: "PUT",
+        body: JSON.stringify({ impact }),
+      }
+    );
   }
 
-  async generateReport(campaignId: string, report: any): Promise<{ campaign: any }> {
+  async generateReport(
+    campaignId: string,
+    report: any
+  ): Promise<{ campaign: any }> {
     return this.request(`/impact/campaigns/${campaignId}/reports`, {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify(report),
     });
   }
 
   async getCampaignAnalytics(): Promise<any> {
-    return this.request('/impact/analytics');
+    return this.request("/impact/analytics");
   }
 
   async getAvailableCampaigns(params?: {
@@ -538,17 +571,20 @@ class ApiClient {
     offset?: number;
   }): Promise<PaginatedResponse<any>> {
     const query = new URLSearchParams();
-    if (params?.category) query.append('category', params.category);
-    if (params?.location) query.append('location', params.location);
-    if (params?.limit) query.append('limit', params.limit.toString());
-    if (params?.offset) query.append('offset', params.offset.toString());
+    if (params?.category) query.append("category", params.category);
+    if (params?.location) query.append("location", params.location);
+    if (params?.limit) query.append("limit", params.limit.toString());
+    if (params?.offset) query.append("offset", params.offset.toString());
 
     return this.request(`/impact/campaigns/available?${query.toString()}`);
   }
 
-  async joinCampaign(campaignId: string, data: { contributionDescription?: string }): Promise<{ campaign: any }> {
+  async joinCampaign(
+    campaignId: string,
+    data: { contributionDescription?: string }
+  ): Promise<{ campaign: any }> {
     return this.request(`/impact/campaigns/${campaignId}/join`, {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify(data),
     });
   }
@@ -558,15 +594,18 @@ class ApiClient {
     participantId: string,
     data: { verificationStatus: string; notes?: string }
   ): Promise<{ campaign: any }> {
-    return this.request(`/impact/campaigns/${campaignId}/participants/${participantId}/verify`, {
-      method: 'PUT',
-      body: JSON.stringify(data),
-    });
+    return this.request(
+      `/impact/campaigns/${campaignId}/participants/${participantId}/verify`,
+      {
+        method: "PUT",
+        body: JSON.stringify(data),
+      }
+    );
   }
 
   async distributeRewards(campaignId: string): Promise<any> {
     return this.request(`/impact/campaigns/${campaignId}/distribute-rewards`, {
-      method: 'POST',
+      method: "POST",
     });
   }
 
@@ -580,14 +619,14 @@ class ApiClient {
     }
   ): Promise<any> {
     return this.request(`/impact/campaigns/${campaignId}/create-token`, {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify(data),
     });
   }
 
   // User Details endpoints
   async getUserProfile(): Promise<any> {
-    return this.request('/user/profile');
+    return this.request("/user/profile");
   }
 
   async updateUserProfile(profileData: {
@@ -597,8 +636,8 @@ class ApiClient {
     country?: string;
     roleData?: any;
   }): Promise<any> {
-    return this.request('/user/profile', {
-      method: 'PUT',
+    return this.request("/user/profile", {
+      method: "PUT",
       body: JSON.stringify(profileData),
     });
   }
@@ -607,25 +646,25 @@ class ApiClient {
     currentPassword: string;
     newPassword: string;
   }): Promise<any> {
-    return this.request('/user/password', {
-      method: 'PUT',
+    return this.request("/user/password", {
+      method: "PUT",
       body: JSON.stringify(passwordData),
     });
   }
 
   async getUserRoleData(): Promise<any> {
-    return this.request('/user/profile/role-data');
+    return this.request("/user/profile/role-data");
   }
 
   async updateUserRoleData(roleData: any): Promise<any> {
-    return this.request('/user/profile/role-data', {
-      method: 'PUT',
+    return this.request("/user/profile/role-data", {
+      method: "PUT",
       body: JSON.stringify(roleData),
     });
   }
 
   async getInsurers(): Promise<{ insurers: any[] }> {
-    return this.request('/user/insurers');
+    return this.request("/user/insurers");
   }
 
   // Persona endpoints (DID resolution, VC issuance)
@@ -633,15 +672,18 @@ class ApiClient {
     return this.request(`/persona/${did}`);
   }
 
-  async issueVC(did: string, vcData: {
-    type: string;
-    claim: any;
-    expiryDays?: number;
-    notifyEmail?: string;
-    notifyPhone?: string;
-  }): Promise<any> {
+  async issueVC(
+    did: string,
+    vcData: {
+      type: string;
+      claim: any;
+      expiryDays?: number;
+      notifyEmail?: string;
+      notifyPhone?: string;
+    }
+  ): Promise<any> {
     return this.request(`/persona/${did}/vc`, {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify(vcData),
     });
   }
@@ -656,27 +698,27 @@ class ApiClient {
     scheduledAt: string;
     reason: string;
   }): Promise<any> {
-    return this.request('/medflow/appointments', {
-      method: 'POST',
+    return this.request("/medflow/appointments", {
+      method: "POST",
       body: JSON.stringify(appointmentData),
     });
   }
 
   async listAppointments(params?: { status?: string }): Promise<any> {
     const query = new URLSearchParams();
-    if (params?.status) query.append('status', params.status);
+    if (params?.status) query.append("status", params.status);
     return this.request(`/medflow/appointments?${query.toString()}`);
   }
 
   async acceptAppointment(appointmentId: string): Promise<any> {
     return this.request(`/medflow/appointments/${appointmentId}/accept`, {
-      method: 'PATCH',
+      method: "PATCH",
     });
   }
 
   async cancelAppointment(appointmentId: string): Promise<any> {
     return this.request(`/medflow/appointments/${appointmentId}/cancel`, {
-      method: 'PATCH',
+      method: "PATCH",
     });
   }
 
@@ -685,8 +727,8 @@ class ApiClient {
     title: string;
     payload: any;
   }): Promise<any> {
-    return this.request('/medflow/prescriptions', {
-      method: 'POST',
+    return this.request("/medflow/prescriptions", {
+      method: "POST",
       body: JSON.stringify(prescriptionData),
     });
   }
@@ -697,35 +739,45 @@ class ApiClient {
 
   async listPrescriptions(params?: { status?: string }): Promise<any> {
     const query = new URLSearchParams();
-    if (params?.status) query.append('status', params.status);
+    if (params?.status) query.append("status", params.status);
     return this.request(`/medflow/prescriptions?${query.toString()}`);
   }
 
-  async listDoctors(params?: { specialty?: string; search?: string; limit?: number }): Promise<any> {
+  async listDoctors(params?: {
+    specialty?: string;
+    search?: string;
+    limit?: number;
+  }): Promise<any> {
     const query = new URLSearchParams();
-    if (params?.specialty) query.append('specialty', params.specialty);
-    if (params?.search) query.append('search', params.search);
-    if (params?.limit) query.append('limit', params.limit.toString());
+    if (params?.specialty) query.append("specialty", params.specialty);
+    if (params?.search) query.append("search", params.search);
+    if (params?.limit) query.append("limit", params.limit.toString());
     return this.request(`/medflow/doctors?${query.toString()}`);
   }
 
-  async uploadMedflowDocuments(formData: FormData): Promise<{ message: string; record: HealthRecord }> {
+  async uploadMedflowDocuments(
+    formData: FormData
+  ): Promise<{ message: string; record: HealthRecord }> {
     const url = `${this.baseURL}/medflow/records/upload`;
 
     const headers: Record<string, string> = {};
     if (this.token) {
-      headers['Authorization'] = `Bearer ${this.token}`;
+      headers["Authorization"] = `Bearer ${this.token}`;
     }
 
     const response = await fetch(url, {
-      method: 'POST',
+      method: "POST",
       headers,
       body: formData, // Don't set Content-Type - let browser set it with boundary
     });
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.message || errorData.error || `HTTP error! status: ${response.status}`);
+      throw new Error(
+        errorData.message ||
+          errorData.error ||
+          `HTTP error! status: ${response.status}`
+      );
     }
 
     return response.json();
@@ -740,15 +792,15 @@ class ApiClient {
     description: string;
     attachments?: string[];
   }): Promise<any> {
-    return this.request('/claims', {
-      method: 'POST',
+    return this.request("/claims", {
+      method: "POST",
       body: JSON.stringify(claimData),
     });
   }
 
   async getClaimsList(params?: { status?: string }): Promise<any> {
     const query = new URLSearchParams();
-    if (params?.status) query.append('status', params.status);
+    if (params?.status) query.append("status", params.status);
     return this.request(`/claims?${query.toString()}`);
   }
 
@@ -756,20 +808,23 @@ class ApiClient {
     return this.request(`/claims/${claimId}`);
   }
 
-  async approveClaim(claimId: string, data: {
-    amountApproved?: number;
-    payoutMethod?: string;
-    payoutDetails?: any;
-  }): Promise<any> {
+  async approveClaim(
+    claimId: string,
+    data: {
+      amountApproved?: number;
+      payoutMethod?: string;
+      payoutDetails?: any;
+    }
+  ): Promise<any> {
     return this.request(`/claims/${claimId}/approve`, {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify(data),
     });
   }
 
   async rejectClaim(claimId: string, data: { reason: string }): Promise<any> {
     return this.request(`/claims/${claimId}/reject`, {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify(data),
     });
   }
@@ -793,8 +848,8 @@ class ApiClient {
     metadata?: any;
     manufacturerDid: string;
   }): Promise<any> {
-    return this.request('/meditrace/batch', {
-      method: 'POST',
+    return this.request("/meditrace/batch", {
+      method: "POST",
       body: JSON.stringify(batchData),
     });
   }
@@ -808,8 +863,8 @@ class ApiClient {
     toAccountId?: string;
     toAccountPrivateKey?: string;
   }): Promise<any> {
-    return this.request('/meditrace/event', {
-      method: 'POST',
+    return this.request("/meditrace/event", {
+      method: "POST",
       body: JSON.stringify(eventData),
     });
   }
@@ -825,13 +880,13 @@ class ApiClient {
   async reportBatchIssue(reportData: {
     batchNumber: string;
     reporterDid: string;
-    issueType: 'counterfeit' | 'temperature' | 'damaged' | 'expired' | 'other';
+    issueType: "counterfeit" | "temperature" | "damaged" | "expired" | "other";
     description: string;
     location: string;
     evidence?: string[];
   }): Promise<any> {
-    return this.request('/meditrace/report', {
-      method: 'POST',
+    return this.request("/meditrace/report", {
+      method: "POST",
       body: JSON.stringify(reportData),
     });
   }
@@ -842,9 +897,10 @@ class ApiClient {
     offset?: number;
   }): Promise<any> {
     const query = new URLSearchParams();
-    if (params?.manufacturerDid) query.append('manufacturerDid', params.manufacturerDid);
-    if (params?.limit) query.append('limit', params.limit.toString());
-    if (params?.offset) query.append('offset', params.offset.toString());
+    if (params?.manufacturerDid)
+      query.append("manufacturerDid", params.manufacturerDid);
+    if (params?.limit) query.append("limit", params.limit.toString());
+    if (params?.offset) query.append("offset", params.offset.toString());
     return this.request(`/meditrace/batches?${query.toString()}`);
   }
 
@@ -857,8 +913,8 @@ class ApiClient {
     conversationId: string;
     message: any;
   }> {
-    return this.request('/healthiq/chat', {
-      method: 'POST',
+    return this.request("/healthiq/chat", {
+      method: "POST",
       body: JSON.stringify(data),
     });
   }
@@ -873,9 +929,10 @@ class ApiClient {
     total: number;
   }> {
     const query = new URLSearchParams();
-    if (params?.limit) query.append('limit', params.limit.toString());
-    if (params?.skip) query.append('skip', params.skip.toString());
-    if (params?.isActive !== undefined) query.append('isActive', params.isActive.toString());
+    if (params?.limit) query.append("limit", params.limit.toString());
+    if (params?.skip) query.append("skip", params.skip.toString());
+    if (params?.isActive !== undefined)
+      query.append("isActive", params.isActive.toString());
     return this.request(`/healthiq/conversations?${query.toString()}`);
   }
 
@@ -891,7 +948,7 @@ class ApiClient {
     message: string;
   }> {
     return this.request(`/healthiq/conversations/${conversationId}`, {
-      method: 'DELETE',
+      method: "DELETE",
     });
   }
 
@@ -910,8 +967,8 @@ class ApiClient {
     message: string;
     profile: any;
   }> {
-    return this.request('/healthiq/health-data', {
-      method: 'POST',
+    return this.request("/healthiq/health-data", {
+      method: "POST",
       body: JSON.stringify(data),
     });
   }
@@ -921,7 +978,7 @@ class ApiClient {
     profile: any | null;
     message?: string;
   }> {
-    return this.request('/healthiq/health-profile');
+    return this.request("/healthiq/health-profile");
   }
 
   async generateHealthInsights(): Promise<{
@@ -929,8 +986,8 @@ class ApiClient {
     insights: any[];
     message: string;
   }> {
-    return this.request('/healthiq/generate-insights', {
-      method: 'POST',
+    return this.request("/healthiq/generate-insights", {
+      method: "POST",
     });
   }
 
@@ -942,8 +999,8 @@ class ApiClient {
     insights: any[];
   }> {
     const query = new URLSearchParams();
-    if (params?.insightType) query.append('insightType', params.insightType);
-    if (params?.limit) query.append('limit', params.limit.toString());
+    if (params?.insightType) query.append("insightType", params.insightType);
+    if (params?.limit) query.append("limit", params.limit.toString());
     return this.request(`/healthiq/insights?${query.toString()}`);
   }
 
@@ -952,43 +1009,46 @@ class ApiClient {
     insight: any;
   }> {
     return this.request(`/healthiq/insights/${insightId}/view`, {
-      method: 'PUT',
+      method: "PUT",
     });
   }
 
   // GovHealth endpoints (Regulatory Compliance & Licensing)
   async issueLicense(licenseData: {
     issuedTo: string;
-    issuedToType: 'practitioner' | 'facility' | 'lab' | 'pharmacy';
+    issuedToType: "practitioner" | "facility" | "lab" | "pharmacy";
     issuedBy: string;
     validFrom: string;
     validUntil: string;
     complianceRequirements?: string[];
     certificateBlob?: string;
   }): Promise<{ message: string; license: any }> {
-    return this.request('/gov-health/licenses', {
-      method: 'POST',
+    return this.request("/gov-health/licenses", {
+      method: "POST",
       body: JSON.stringify(licenseData),
     });
   }
 
-  async revokeLicense(licenseId: string, data: {
-    revokedBy: string;
-    reason: string;
-  }): Promise<{ message: string; license: any }> {
+  async revokeLicense(
+    licenseId: string,
+    data: {
+      revokedBy: string;
+      reason: string;
+    }
+  ): Promise<{ message: string; license: any }> {
     return this.request(`/gov-health/licenses/${licenseId}/revoke`, {
-      method: 'PUT',
+      method: "PUT",
       body: JSON.stringify(data),
     });
   }
 
   async listLicenses(params?: {
-    status?: 'active' | 'revoked' | 'expired';
+    status?: "active" | "revoked" | "expired";
     issuedTo?: string;
   }): Promise<{ licenses: any[] }> {
     const query = new URLSearchParams();
-    if (params?.status) query.append('status', params.status);
-    if (params?.issuedTo) query.append('issuedTo', params.issuedTo);
+    if (params?.status) query.append("status", params.status);
+    if (params?.issuedTo) query.append("issuedTo", params.issuedTo);
     return this.request(`/gov-health/licenses?${query.toString()}`);
   }
 
@@ -996,13 +1056,16 @@ class ApiClient {
     return this.request(`/gov-health/licenses/${licenseId}`);
   }
 
-  async updateLicenseStatus(licenseId: string, data: {
-    status: 'active' | 'revoked' | 'expired';
-    updatedBy: string;
-    reason?: string;
-  }): Promise<{ message: string; license: any }> {
+  async updateLicenseStatus(
+    licenseId: string,
+    data: {
+      status: "active" | "revoked" | "expired";
+      updatedBy: string;
+      reason?: string;
+    }
+  ): Promise<{ message: string; license: any }> {
     return this.request(`/gov-health/licenses/${licenseId}/status`, {
-      method: 'PUT',
+      method: "PUT",
       body: JSON.stringify(data),
     });
   }
@@ -1012,25 +1075,25 @@ class ApiClient {
     performedBy: string;
     summary: string;
     findings: string[];
-    severity: 'low' | 'medium' | 'high';
+    severity: "low" | "medium" | "high";
     reportBlob?: string;
     targetLicenseId?: string;
   }): Promise<{ message: string; audit: any }> {
-    return this.request('/gov-health/audits', {
-      method: 'POST',
+    return this.request("/gov-health/audits", {
+      method: "POST",
       body: JSON.stringify(auditData),
     });
   }
 
   async listAudits(params?: {
-    severity?: 'low' | 'medium' | 'high';
+    severity?: "low" | "medium" | "high";
     targetEntity?: string;
     performedBy?: string;
   }): Promise<{ audits: any[] }> {
     const query = new URLSearchParams();
-    if (params?.severity) query.append('severity', params.severity);
-    if (params?.targetEntity) query.append('targetEntity', params.targetEntity);
-    if (params?.performedBy) query.append('performedBy', params.performedBy);
+    if (params?.severity) query.append("severity", params.severity);
+    if (params?.targetEntity) query.append("targetEntity", params.targetEntity);
+    if (params?.performedBy) query.append("performedBy", params.performedBy);
     return this.request(`/gov-health/audits?${query.toString()}`);
   }
 
@@ -1054,24 +1117,30 @@ class ApiClient {
     };
     complianceScore: number;
   }> {
-    return this.request('/gov-health/stats/compliance');
+    return this.request("/gov-health/stats/compliance");
   }
 
   async getPublicHealthData(params?: {
     region?: string;
-    dataType?: 'disease_statistics' | 'vaccination_rates' | 'facility_capacity' | 'licensing_stats' | 'audit_summary';
-    timeframe?: 'daily' | 'weekly' | 'monthly' | 'quarterly' | 'yearly';
+    dataType?:
+      | "disease_statistics"
+      | "vaccination_rates"
+      | "facility_capacity"
+      | "licensing_stats"
+      | "audit_summary";
+    timeframe?: "daily" | "weekly" | "monthly" | "quarterly" | "yearly";
     startDate?: string;
     endDate?: string;
     anonymized?: boolean;
   }): Promise<{ counts: any; messages: any[] }> {
     const query = new URLSearchParams();
-    if (params?.region) query.append('region', params.region);
-    if (params?.dataType) query.append('dataType', params.dataType);
-    if (params?.timeframe) query.append('timeframe', params.timeframe);
-    if (params?.startDate) query.append('startDate', params.startDate);
-    if (params?.endDate) query.append('endDate', params.endDate);
-    if (params?.anonymized !== undefined) query.append('anonymized', params.anonymized.toString());
+    if (params?.region) query.append("region", params.region);
+    if (params?.dataType) query.append("dataType", params.dataType);
+    if (params?.timeframe) query.append("timeframe", params.timeframe);
+    if (params?.startDate) query.append("startDate", params.startDate);
+    if (params?.endDate) query.append("endDate", params.endDate);
+    if (params?.anonymized !== undefined)
+      query.append("anonymized", params.anonymized.toString());
     return this.request(`/gov-health/public-data?${query.toString()}`);
   }
 }
