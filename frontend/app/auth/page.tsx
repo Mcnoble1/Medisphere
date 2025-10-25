@@ -118,8 +118,8 @@ export default function AuthPage() {
     }
 
     // Check if user is already logged in and redirect to their dashboard
-    const token = localStorage.getItem('authToken');
-    const userStr = localStorage.getItem('user');
+    const token = localStorage.getItem("authToken");
+    const userStr = localStorage.getItem("user");
     if (token && userStr) {
       try {
         const user = JSON.parse(userStr);
@@ -128,7 +128,7 @@ export default function AuthPage() {
           window.location.href = `/dashboard/${userRole}`;
         }
       } catch (error) {
-        console.error('Error parsing user data:', error);
+        console.error("Error parsing user data:", error);
       }
     }
   }, []);
@@ -144,16 +144,19 @@ export default function AuthPage() {
     try {
       if (isLogin) {
         // Handle login
-        const response = await fetch("http://localhost:4000/api/auth/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email: formData.email,
-            password: formData.password,
-          }),
-        });
+        const response = await fetch(
+          "https://medisphere-api.up.railway.app/api/auth/login",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              email: formData.email,
+              password: formData.password,
+            }),
+          }
+        );
 
         if (response.ok) {
           const data = await response.json();
@@ -202,7 +205,7 @@ export default function AuthPage() {
 
         // Handle registration
         const response = await fetch(
-          "http://localhost:4000/api/auth/register",
+          "https://medisphere-api.up.railway.app/api/auth/register",
           {
             method: "POST",
             headers: {
