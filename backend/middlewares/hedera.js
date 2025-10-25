@@ -1,4 +1,3 @@
-// Middleware to attach Hedera client to requests
 export function attachHederaClient(req, res, next) {
   // Get Hedera client from app instance
   req.hederaClient = req.app.get('hederaClient');

@@ -2,7 +2,7 @@
 
 **Track**: DLT for Operations
 
-[![License: Apache-2.0](https://img.shields.io/badge/License-Apache-2.0-yellow.svg)](https://opensource.org/licenses/Apache-2.0)
+[![License: Apache-2.0](https://img.shields.io/badge/License-Apache-yellow.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Hedera](https://img.shields.io/badge/Powered%20by-Hedera-blue)](https://hedera.com)
 [![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org/)
 [![Node.js](https://img.shields.io/badge/Node.js-18+-green)](https://nodejs.org/)
@@ -473,32 +473,6 @@ MediSphere consists of **11 integrated services** solving specific healthcare ch
 9. **MediTrace** - Pharmaceutical Supply Chain (QR codes, anti-counterfeiting)
 10. **MedFlow** - Appointment Management (Scheduling with HCS logs)
 11. **BlockExplorer** - Public Data Verification (Mirror Node indexer, statistics)
-
----
-
-## Technology Stack
-
-### Backend
-
-- **Runtime**: Node.js 18+
-- **Framework**: Express.js
-- **Database**: MongoDB 6.0+ (Mongoose ODM)
-- **Blockchain**: Hedera SDK v2.72.0
-- **Storage**: IPFS (Pinata Web3 SDK), Cloudinary
-- **Authentication**: JWT, bcryptjs
-
-### Frontend
-
-- **Framework**: Next.js 14 (React 18)
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS 4.1+
-- **UI Library**: Radix UI (shadcn/ui)
-
-### Blockchain & Web3
-
-- **Network**: Hedera Hashgraph Testnet
-- **Services**: HCS, HTS, DID SDK, Mirror Node API
-- **Verification**: HashScan explorer integration
 
 ---
 
