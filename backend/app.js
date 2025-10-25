@@ -70,7 +70,10 @@ app.use(
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: [
+      "http://localhost:3000",
+      "https://medisphere.up.railway.app",
+    ],
     credentials: true,
   }),
 );
@@ -108,10 +111,6 @@ app.use(`${api}/healthiq`, healthiqRoutes);
 app.use(`${api}/explorer`, explorerRoutes);
 
 
-// Initialize Swagger
-
-
-// catch 404 and forward to error handler
 // Health
 app.get(`${api}/health`, (_req, res) => res.json({ ok: true }));
 
