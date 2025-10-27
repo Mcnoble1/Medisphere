@@ -19,6 +19,26 @@
 
 ---
 
+---
+
+## Core Features & Services
+
+MediSphere consists of **11 integrated services** solving specific healthcare challenges:
+
+1. **LifeChain** - Health Records Management (HCS + IPFS + NFTs)
+2. **PersonaVault** - Decentralized Identity (Hedera DID + Verifiable Credentials)
+3. **CareXpay** - Token-Based Payments (HTS fungible tokens + HBAR)
+4. **DataBridge** - Consent-Based Data Exchange (8 actor types, JWT access control)
+5. **HealthIQ** - AI Health Assistant (Personalized insights, conversational AI)
+6. **ClaimSphere** - Insurance Claims (HCS verification + automatic HTS payouts)
+7. **ImpactGrid** - Health Campaigns (Custom HTS tokens, batch rewards)
+8. **GovHealth** - Compliance & Licensing (IPFS certificates, HCS regulatory logs)
+9. **MediTrace** - Pharmaceutical Supply Chain (QR codes, anti-counterfeiting)
+10. **MedFlow** - Appointment Management (Scheduling with HCS logs)
+11. **BlockExplorer** - Public Data Verification (Mirror Node indexer, statistics)
+
+---
+
 ## Hedera Integration Summary
 
 MediSphere is a comprehensive healthcare platform that leverages **four core Hedera services** to provide secure, transparent, cost-efficient, and interoperable health data management across Africa. Our integration strategy prioritizes economic sustainability and operational reliability for resource-constrained healthcare settings.
@@ -448,7 +468,7 @@ All Hedera resources are deployed on **Hedera Testnet** for development and demo
 
 **For hackathon judges to test the platform**, the following test credentials are provided in the DoraHacks submission text field:
 
-- **Test Patient Account**: Email and password for patient dashboard access
+- **Test Patient Account**: Email: Password:
 - **Test Doctor Account**: Email and password for doctor dashboard access
 - **Hedera Operator Account ID**: For verifying transactions on HashScan
 - **HCS Topic ID**: For viewing audit logs via Mirror Node
@@ -457,46 +477,3 @@ All Hedera resources are deployed on **Hedera Testnet** for development and demo
 **Important**: These credentials are for **testnet only** and will be rotated after the hackathon.
 
 ---
-
-## Core Features & Services
-
-MediSphere consists of **11 integrated services** solving specific healthcare challenges:
-
-1. **LifeChain** - Health Records Management (HCS + IPFS + NFTs)
-2. **PersonaVault** - Decentralized Identity (Hedera DID + Verifiable Credentials)
-3. **CareXpay** - Token-Based Payments (HTS fungible tokens + HBAR)
-4. **DataBridge** - Consent-Based Data Exchange (8 actor types, JWT access control)
-5. **HealthIQ** - AI Health Assistant (Personalized insights, conversational AI)
-6. **ClaimSphere** - Insurance Claims (HCS verification + automatic HTS payouts)
-7. **ImpactGrid** - Health Campaigns (Custom HTS tokens, batch rewards)
-8. **GovHealth** - Compliance & Licensing (IPFS certificates, HCS regulatory logs)
-9. **MediTrace** - Pharmaceutical Supply Chain (QR codes, anti-counterfeiting)
-10. **MedFlow** - Appointment Management (Scheduling with HCS logs)
-11. **BlockExplorer** - Public Data Verification (Mirror Node indexer, statistics)
-
----
-
-## Acknowledgments
-
-- **Hedera Hashgraph** - Enterprise-grade DLT infrastructure
-- **Hedera Africa Hackathon** - Platform for healthcare innovation
-- **IPFS/Pinata** - Decentralized storage solution
-- **MongoDB** - Flexible NoSQL database
-- **Next.js & React** - Modern web framework
-- **African Healthcare Community** - Inspiration and use case validation
-
----
-
-<div align="center">
-
-## Built with ❤️ for Healthcare Innovation in Africa
-
-**Powered by Hedera Hashgraph | Secured by Blockchain | Designed for Universal Access**
-
-**Track**: Healthcare & Public Health Innovation
-**Network**: Hedera Testnet
-**Status**: Ready for Demo & Judging
-
-[View on HashScan](https://hashscan.io/testnet/account/0.0.5294940) | [API Docs](http://localhost:4000/api/docs) | [Block Explorer](http://localhost:3000/explorer)
-
-</div>

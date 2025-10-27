@@ -14,7 +14,19 @@ export const metadata: Metadata = {
   title: "MediSphere™ - The Decentralized Health Ecosystem on Hedera",
   description:
     "A trustless, borderless, patient-first healthcare grid for Africa. Built on Hedera blockchain technology.",
-  generator: "v0.app",
+  authors: [{ name: "Festus Idowu", url: "https://medisphere.up.railway.app" }],
+  keywords: [
+    "MediSphere",
+    "Decentralized Healthcare",
+    "Hedera",
+    "Blockchain Health",
+    "Health dApps",
+    "Patient Data Security",
+    "Africa Health Tech",
+    "Web3 Healthcare",
+    "Health Ecosystem",
+    "Digital Health Records",
+  ],
 };
 
 export default function RootLayout({
