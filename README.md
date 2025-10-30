@@ -1,8 +1,9 @@
 # MediSphere - Hedera-Powered Healthcare Data Management Platform
 
-**Track**: DLT for Operations
-[Hashgraph Certificate](https://drive.google.com/file/d/1KW4IWeE4MEwC77DHKmd1zZ4FbXTOibOv/view?usp=sharing)
-[Pitch Deck]()
+- **Track**: DLT for Operations
+- [Hashgraph Certificate](https://drive.google.com/file/d/1KW4IWeE4MEwC77DHKmd1zZ4FbXTOibOv/view?usp=sharing)
+- [Pitch Deck](https://drive.google.com/file/d/1iAnJCHV5qGHSnGc8NcvXj70Fc7Sims_E/view?usp=sharing)
+- [Demo Video](https://www.youtu.be/sutUauyCy3s)
 
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache-yellow.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Hedera](https://img.shields.io/badge/Powered%20by-Hedera-blue)](https://hedera.com)
@@ -18,8 +19,6 @@
 - [Architectural Diagram](#architecture-diagram)
 - [Deployed Hedera IDs](#deployed-hedera-ids)
 - [Project Structure](#project-structure)
-
----
 
 ---
 
@@ -386,14 +385,6 @@ All Hedera resources are deployed on **Hedera Testnet** for development and demo
 - **Message Format**: JSON (action, actor, metadata, timestamp)
 - **HashScan**: [View Topic](https://hashscan.io/testnet/topic/0.0.6898300)
 
-# HCS Topic IDs
-
-NEXT_PUBLIC_MEDICAL_RECORDS_TOPIC_ID=0.0.6538584
-NEXT_PUBLIC_CONSENT_LOGS_TOPIC_ID=0.0.6538585
-NEXT_PUBLIC_PRESCRIPTIONS_TOPIC_ID=0.0.6538586
-NEXT_PUBLIC_VACCINATIONS_TOPIC_ID=0.0.6538587
-NEXT_PUBLIC_NGO_ACTIVITIES_TOPIC_ID=0.0.6538588
-
 # Hedera Token Service (HTS)
 
 **. Vaccination NFT Collection**
@@ -419,7 +410,7 @@ NEXT_PUBLIC_NGO_ACTIVITIES_TOPIC_ID=0.0.6538588
 
 ### Judge Credentials (Hedera Africa Hackathon)
 
-**For hackathon judges to test the platform**, the login credentials for users are provided in[dorahacks documentation](https://dorahacks.io/buidl/32872/) as we used account abstraction for users.
+**For hackathon judges to test the platform**, the login credentials for users are provided in [dorahacks documentation](https://dorahacks.io/buidl/32872/) as we used account abstraction for users.
 
 ---
 
