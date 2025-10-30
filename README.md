@@ -3,7 +3,7 @@
 - **Track**: DLT for Operations
 - [Hashgraph Certificate](https://drive.google.com/file/d/1KW4IWeE4MEwC77DHKmd1zZ4FbXTOibOv/view?usp=sharing)
 - [Pitch Deck](https://drive.google.com/file/d/1iAnJCHV5qGHSnGc8NcvXj70Fc7Sims_E/view?usp=sharing)
-- [Demo Video](https://www.youtu.be/sutUauyCy3s)
+- [Demo Video](https://www.youtube.com/watch?v=sutUauyCy3s)
 
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache-yellow.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Hedera](https://img.shields.io/badge/Powered%20by-Hedera-blue)](https://hedera.com)
