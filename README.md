@@ -1,6 +1,8 @@
 # MediSphere - Hedera-Powered Healthcare Data Management Platform
 
 **Track**: DLT for Operations
+[Hashgraph Certificate](https://drive.google.com/file/d/1KW4IWeE4MEwC77DHKmd1zZ4FbXTOibOv/view?usp=sharing)
+[Pitch Deck]()
 
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache-yellow.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Hedera](https://img.shields.io/badge/Powered%20by-Hedera-blue)](https://hedera.com)
@@ -41,13 +43,14 @@ MediSphere consists of **11 integrated services** solving specific healthcare ch
 
 ## Hedera Integration Summary
 
-MediSphere is a comprehensive healthcare platform that leverages **four core Hedera services** to provide secure, transparent, cost-efficient, and interoperable health data management across Africa. Our integration strategy prioritizes economic sustainability and operational reliability for resource-constrained healthcare settings.
+MediSphere integrates **four core Hedera services** to deliver secure, transparent, and affordable health data management across Africa. The platform emphasizes cost-efficiency and scalability for resource-limited healthcare systems.
 
-### 1. Hedera Consensus Service (HCS) - Immutable Audit Trails
+---
 
-**Why We Chose HCS**:
+### 1. Hedera Consensus Service (HCS) – Immutable Audit Trails
 
-We selected Hedera Consensus Service for immutable logging of all critical healthcare events because its **predictable $0.0001 fee per message** guarantees operational cost stability, which is essential for low-margin healthcare operations in Africa. Unlike traditional cloud audit logs that charge per GB ($0.10-$0.30/GB), HCS provides cryptographic proof of data integrity at a fixed, micro-transaction cost. This enables even small rural clinics with limited budgets to maintain enterprise-grade compliance and transparency.
+**Why HCS:**  
+HCS offers **predictable micro-fees ($0.0001/message)** for immutable logging, ensuring compliance and auditability at a fraction of cloud costs ($0.10–$0.30/GB). This enables even small clinics to maintain secure, verifiable audit trails.
 
 **Transaction Types Executed**:
 
@@ -55,26 +58,23 @@ We selected Hedera Consensus Service for immutable logging of all critical healt
 - `TopicCreateTransaction` - Initialize platform-wide audit topic during deployment
 - `TopicInfoQuery` - Retrieve topic metadata and verify topic configuration
 
-**Economic Justification**:
+**Economics:**  
+A hospital logging 1,000 events/month pays **$0.10**, versus $50–$200 using centralized systems — a **500–2000× cost reduction**. With 10,000+ TPS, scalability is guaranteed.
 
-For a typical African hospital processing 1,000 patient records monthly, HCS audit logging costs approximately **$0.10/month** (1,000 messages × $0.0001), compared to traditional centralized audit solutions that cost $50-$200/month. This 500-2000x cost reduction makes compliance accessible to resource-constrained facilities. Additionally, HCS's 10,000+ TPS throughput ensures our platform can scale from small clinics to national health systems without performance degradation or cost spikes.
+**Use Cases:**
 
-**Key Implementation Features**:
-
-- Audit logs for health record creation/updates
-- Data sharing consent trail
-- Insurance claim lifecycle tracking
-- Campaign participation verification
-- Regulatory compliance events
-- License issuance and revocation logging
+- Health record updates
+- Consent trails
+- Insurance claim tracking
+- Campaign participation logs
+- Regulatory compliance and licensing
 
 ---
 
-### 2. Hedera Token Service (HTS) - Economic Incentive Layer
+### 2. Hedera Token Service (HTS) – Incentive & Payment Layer
 
-**Why We Chose HTS**:
-
-We chose Hedera Token Service to power our token-based incentive economy because its **$1 fixed token creation fee** and **$0.001 transfer fees** enable sustainable micro-payment systems for health campaigns, insurance payouts, and patient rewards. In African healthcare contexts where cash-based payments face infrastructure challenges (limited banking access, currency volatility), HTS provides a stable, programmable payment rail. The ABFT (Asynchronous Byzantine Fault Tolerance) finality ensures instant settlement, critical for emergency insurance payouts where traditional banks may take 3-7 days.
+**Why HTS:**  
+With **$1 token creation** and **$0.001 transfer fees**, HTS enables micro-payments for campaigns, insurance payouts, and patient rewards. ABFT finality ensures instant settlement — essential for time-critical healthcare operations.
 
 **Transaction Types Executed**:
 
@@ -85,40 +85,32 @@ We chose Hedera Token Service to power our token-based incentive economy because
 - `TokenBurnTransaction` - Burn redeemed reward tokens to maintain economic balance
 - `TokenInfoQuery` - Query token metadata, supply, and treasury account
 
-**Economic Justification**:
+**Economics:**  
+Rewarding 100,000 users costs **$101 total** vs $2,000–$3,000 via traditional processors — **95%+ savings** and real-time settlement.
 
-Consider a national vaccination campaign reaching 100,000 participants: Creating a custom HTS reward token costs **$1 flat**, and distributing rewards costs **$100** (100,000 transfers × $0.001). Traditional payment processors would charge 2-3% per transaction ($2,000-$3,000 for the same campaign), plus integration fees. HTS's 95%+ cost savings and 10-second finality enable real-time incentive distribution at health clinics, improving campaign participation rates by providing instant gratification. This is particularly impactful in rural areas where participants may need to travel significant distances to vaccination sites.
+**Use Cases:**
 
-**Key Implementation Features**:
-
-- CARE token (platform native currency)
-- Campaign-specific reward tokens
-- Automatic insurance claim payouts (10% of approved amount)
-- NFT vaccination certificates (tamper-proof immunization records)
-- Token-based access to premium health analytics
-- Peer-to-peer token transfers between ecosystem actors
+- CARE token (native currency)
+- Campaign rewards
+- Automated insurance payouts
+- NFT vaccination certificates
+- Tokenized analytics access
+- Peer-to-peer payments
 
 ---
 
-### 3. Hedera Mirror Node API - Real-Time Data Indexing
+### 3. Hedera Mirror Node API – Real-Time Transparency
 
-**Why We Chose Mirror Node API**:
+**Why Mirror Node:**  
+Provides **free REST API access** to verified blockchain data for our BlockExplorer, enabling public record verification without on-chain query fees. Data updates within 2–3 seconds of consensus.
 
-We integrated Hedera Mirror Node API because it provides **free, unlimited REST API access** to historical blockchain data, enabling our BlockExplorer service to offer public verification of health records without on-chain query costs. For a healthcare platform prioritizing transparency and patient empowerment, the ability to let anyone verify record authenticity via HashScan links (without paying per-query fees) democratizes trust. Mirror Node's 2-3 second latency from consensus ensures our platform displays near real-time transaction confirmations.
+**Endpoints:**  
+`/topics/{topicId}/messages`, `/transactions/{transactionId}`, `/accounts/{accountId}/tokens`, `/tokens/{tokenId}`, `/accounts/{accountId}`
 
-**Transaction Types Indexed**:
+**Economics:**  
+Zero-cost indexing vs $50–$500/month for other APIs. Supports 10,000+ messages/day, making transparency scalable and sustainable.
 
-- `GET /api/v1/topics/{topicId}/messages` - Retrieve HCS messages for audit log reconstruction
-- `GET /api/v1/transactions/{transactionId}` - Fetch detailed transaction data for verification
-- `GET /api/v1/accounts/{accountId}/tokens` - Query user token balances and associations
-- `GET /api/v1/tokens/{tokenId}` - Retrieve token metadata and supply information
-- `GET /api/v1/accounts/{accountId}` - Get account balance and transaction history
-
-**Economic Justification**:
-
-Traditional blockchain indexing solutions (The Graph, Alchemy) charge $50-$500/month for API access with rate limits. Mirror Node API's **$0/month cost** for unlimited queries enables our platform to provide free public verification services, critical for building trust in African healthcare systems where institutional corruption concerns are prevalent. Our indexer processes 10,000+ messages daily at zero incremental cost, making transparency economically sustainable.
-
-**Key Implementation Features**:
+**Use Cases:**
 
 - Real-time HCS message polling and indexing
 - Public record verification via hash lookup
@@ -129,24 +121,18 @@ Traditional blockchain indexing solutions (The Graph, Alchemy) charge $50-$500/m
 
 ---
 
-### 4. Hedera DID SDK - Self-Sovereign Identity
+### 4. Hedera DID SDK – Self-Sovereign Identity
 
-**Why We Chose Hedera DID**:
+**Why Hedera DID:**  
+Provides **free, decentralized identity management**, solving Africa’s credential fraud problem. DID setup costs **~$0.50** versus $10,000+ for PKI systems, using W3C Verifiable Credentials for global interoperability.
 
-We implemented Hedera DID (Decentralized Identifiers) because it provides **free DID creation** and enables healthcare workers to establish verifiable credentials without central authority approval, addressing the credential verification crisis in African healthcare (estimated 50,000+ fraudulent practitioners continent-wide). Traditional digital identity systems require expensive PKI infrastructure ($10,000+ setup costs); Hedera DID reduces this to **$0.50** (account creation + topic fees). The W3C-compliant Verifiable Credentials standard ensures interoperability with global health systems.
+**Transactions:**  
+`TopicMessageSubmitTransaction`, `TopicCreateTransaction`, DID document publishing & resolution
 
-**Transaction Types Executed**:
+**Economics:**  
+10,000 practitioners = **$500/year**, vs $50k–$100k using legacy systems — a **99% reduction**.
 
-- `TopicMessageSubmitTransaction` - Publish DID documents to identity topics
-- `TopicCreateTransaction` - Create per-user DID document topics
-- Verifiable Credential issuance (off-chain signing, on-chain anchoring)
-- DID document resolution via Mirror Node queries
-
-**Economic Justification**:
-
-For a national medical licensing authority managing 10,000 practitioners, traditional digital certificate systems cost $5-$10 per certificate annually ($50,000-$100,000/year). Hedera DID reduces this to approximately **$500/year** ($0.05 per DID update), a 99% cost reduction. This makes tamper-proof practitioner verification accessible to low-income countries. Additionally, patients can verify doctor credentials instantly via QR code scan, improving trust and reducing medical fraud.
-
-**Key Implementation Features**:
+**Use Cases:**
 
 - Doctor license credential issuance
 - Facility accreditation certificates
@@ -165,7 +151,6 @@ Ensure you have the following installed and configured:
 
 - **Node.js** v18.0.0 or higher ([Download](https://nodejs.org))
 - **MongoDB** v6.0 or higher ([Download](https://www.mongodb.com/try/download/community))
-- **Git** ([Download](https://git-scm.com/downloads))
 - **Hedera Testnet Account** with HBAR balance ([Create Free Account](https://portal.hedera.com))
 - **Pinata Account** for IPFS storage ([Sign Up](https://pinata.cloud))
 - **Cloudinary Account** for media uploads ([Sign Up](https://cloudinary.com))
@@ -388,11 +373,12 @@ All Hedera resources are deployed on **Hedera Testnet** for development and demo
 
 - **Account ID**: `0.0.3742504`
 - **Type**: Main operator account for all platform transactions
-- **Public Key**: `302a300506032b65700321007c77c02a9e23ef5a7953db5b3ff8b48f80e8e5a8f8e3e6ecfb5f9c48a1b6f2d5`
 - **Purpose**: Signs all HCS messages, HTS token operations, and DID transactions
 - **HashScan**: [View Account](https://hashscan.io/testnet/account/0.0.3742504)
 
 ### Hedera Consensus Service (HCS)
+
+# MediSphere HCS Audit Topic ID (created and verified working)
 
 - **Main Audit Topic ID**: `0.0.6898300`
 - **Purpose**: Logs all platform-wide audit events (records, claims, data sharing, campaigns)
@@ -400,80 +386,121 @@ All Hedera resources are deployed on **Hedera Testnet** for development and demo
 - **Message Format**: JSON (action, actor, metadata, timestamp)
 - **HashScan**: [View Topic](https://hashscan.io/testnet/topic/0.0.6898300)
 
-### Hedera Token Service (HTS)
+# HCS Topic IDs
 
-**1. CARE Token (Platform Native Currency)**
+NEXT_PUBLIC_MEDICAL_RECORDS_TOPIC_ID=0.0.6538584
+NEXT_PUBLIC_CONSENT_LOGS_TOPIC_ID=0.0.6538585
+NEXT_PUBLIC_PRESCRIPTIONS_TOPIC_ID=0.0.6538586
+NEXT_PUBLIC_VACCINATIONS_TOPIC_ID=0.0.6538587
+NEXT_PUBLIC_NGO_ACTIVITIES_TOPIC_ID=0.0.6538588
 
-- **Token ID**: `0.0.6900145`
-- **Symbol**: CARE
-- **Type**: Fungible Token
-- **Decimals**: 2
-- **Total Supply**: 10,000,000 CARE
-- **Treasury Account**: `0.0.5294940`
-- **Purpose**: Platform-wide payments, rewards, insurance payouts
-- **HashScan**: [View Token](https://hashscan.io/testnet/token/0.0.6900145)
+# Hedera Token Service (HTS)
 
-**2. Vaccination NFT Collection**
+**. Vaccination NFT Collection**
 
-- **Token ID**: `0.0.6901234`
-- **Symbol**: VACNFT
-- **Type**: Non-Fungible Token (NFT)
+- **Token ID**: `0.0.7090788`
+- **Symbol**: MED-VAX
+  **Type**: Non-Fungible Token (NFT)
 - **Max Supply**: Unlimited
 - **Supply Key**: Controlled by operator (allows minting)
 - **Purpose**: Tamper-proof vaccination certificates
 - **Metadata**: IPFS CID containing vaccination details
-- **HashScan**: [View NFT Collection](https://hashscan.io/testnet/token/0.0.6901234)
+- **HashScan**: [View NFT Collection](https://hashscan.io/testnet/token/0.0.7090788)
 
 **3. Campaign Reward Tokens** (Created dynamically per campaign)
 
-- Example Token ID: `0.0.6902500` (Malaria Awareness Campaign)
-- Symbol: Configured per campaign (e.g., MALAWARE)
+- Example Token ID: `0.0.7093910` (Malaria Awareness Campaign)
+- Symbol: MPT
 - Type: Fungible Token
 - Purpose: Campaign-specific rewards distributed to participants
 - **Note**: Each ImpactGrid campaign can create a unique HTS token
-
-### Hedera DID Topics (Sample)
-
-- **DID Topic Format**: `did:hedera:testnet:{account_id}_{topic_id}`
-- **Example DID Topic ID**: `0.0.6903100`
-- **Purpose**: Store DID documents for healthcare practitioners
-- **Example DID**: `did:hedera:testnet:0.0.5294940_0.0.6903100`
-
-### Test Accounts (For Demonstration)
-
-**Patient Test Account**
-
-- **Account ID**: `0.0.5295000`
-- **Role**: Patient
-- **Associated Tokens**: CARE token
-- **Purpose**: Demonstration patient with sample health records
-
-**Doctor Test Account**
-
-- **Account ID**: `0.0.5295050`
-- **Role**: Doctor
-- **DID**: `did:hedera:testnet:0.0.5295050_0.0.6903150`
-- **License Credential**: Verifiable Credential anchored to Hedera
-
-**Hospital Test Account**
-
-- **Account ID**: `0.0.5295100`
-- **Role**: Hospital
-- **Associated Tokens**: CARE token
-- **Purpose**: Demonstration hospital creating records
 
 ---
 
 ### Judge Credentials (Hedera Africa Hackathon)
 
-**For hackathon judges to test the platform**, the following test credentials are provided in the DoraHacks submission text field:
-
-- **Test Patient Account**: Email: Password:
-- **Test Doctor Account**: Email and password for doctor dashboard access
-- **Hedera Operator Account ID**: For verifying transactions on HashScan
-- **HCS Topic ID**: For viewing audit logs via Mirror Node
-- **Sample Transaction IDs**: Example health record creation transactions
-
-**Important**: These credentials are for **testnet only** and will be rotated after the hackathon.
+**For hackathon judges to test the platform**, the login credentials for users are provided in[dorahacks documentation](https://dorahacks.io/buidl/32872/) as we used account abstraction for users.
 
 ---
+
+## Project Structure
+
+```
+medisphere/
+├── backend/
+│   ├── bin/                      # Server startup scripts
+│   ├── controllers/              # API route controllers
+│   │   ├── authController.js
+│   │   ├── recordController.js
+│   │   ├── databridgeController.js
+│   │   ├── healthiqController.js
+│   │   ├── impactgridController.js
+│   │   ├── claimController.js
+│   │   ├── paymentController.js
+│   │   └── explorerController.js
+│   ├── models/                   # Mongoose schemas
+│   │   ├── userModel.js
+│   │   ├── recordModel.js
+│   │   ├── dataRequestModel.js
+│   │   ├── campaignModel.js
+│   │   ├── insuranceClaimModel.js
+│   │   ├── paymentModel.js
+│   │   └── indexedRecordModel.js
+│   ├── routes/                   # Express routes
+│   │   ├── authRoutes.js
+│   │   ├── recordRoutes.js
+│   │   ├── databridgeRoutes.js
+│   │   ├── healthiqRoutes.js
+│   │   └── explorerRoutes.js
+│   ├── services/                 # Business logic
+│   │   ├── mirrorNodeService.js
+│   │   ├── indexerEngine.js
+│   │   └── statsAggregator.js
+│   ├── utils/                    # Utility functions
+│   │   ├── hcsLogger.js          # Hedera HCS logging
+│   │   ├── ipfsClient.js         # IPFS integration
+│   │   ├── nft.js                # NFT operations
+│   │   ├── hederaTokenService.js # HTS operations
+│   │   ├── cloudinaryConfig.js   # File uploads
+│   │   ├── carexpayService.js    # Payment utilities
+│   │   └── accessTokenUtil.js    # Token management
+│   ├── scripts/                  # Utility scripts
+│   │   ├── startIndexer.js
+│   │   ├── checkHederaBalance.js
+│   │   └── testNFTCreation.js
+│   ├── app.js                    # Express app setup
+│   ├── package.json
+│   └── .env                      # Environment variables
+│
+├── frontend/
+│   ├── app/                      # Next.js app directory
+│   │   ├── dashboard/            # User dashboards
+│   │   │   ├── patient/
+│   │   │   ├── doctor/
+│   │   │   ├── hospital/
+│   │   │   └── insurer/
+│   │   ├── explorer/             # Block explorer
+│   │   │   └── page.tsx
+│   │   ├── layout.tsx
+│   │   └── page.tsx              # Landing page
+│   ├── components/
+│   │   ├── services/             # Service components
+│   │   │   ├── lifechain.tsx
+│   │   │   ├── databridge.tsx
+│   │   │   ├── healthiq.tsx
+│   │   │   ├── carexpay.tsx
+│   │   │   ├── claimsphere.tsx
+│   │   │   ├── impactgrid.tsx
+│   │   │   ├── meditrace.tsx
+│   │   │   └── medflow.tsx
+│   │   └── ui/                   # Reusable UI components
+│   ├── lib/
+│   │   ├── api.ts                # API client
+│   │   └── utils.ts
+│   ├── public/                   # Static assets
+│   ├── styles/
+│   ├── package.json
+│   └── .env.local                # Frontend environment
+│
+└── README.md                     # This file
+```
